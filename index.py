@@ -8,11 +8,14 @@ width = 800
 height = 600
 game = True
 cair = False #caso ele caia o jogo acaba
-game = True
 g_over= True
 mover = 1
 acelerar = 4
 asas_animacao = 0
+vel_y = 0
+pontos = 0
+record = 0
+cano = []
 
 pygame.init()
 windows = pygame.display.set_mode((width, height))
@@ -21,7 +24,7 @@ windows = pygame.display.set_mode((width, height))
 imagem1 = pygame.image.load("img/flap1.png")
 imagem2 = pygame.image.load("img/flap2.png")
 chao = pygame.image.load("img/chao.png")
-tudo = pygame.image.load("img/tubo.png")
+tubo = pygame.image.load("img/tubo.png")
 background = pygame.image.load("img/background.png")
 
 #Objetos de cena
@@ -39,7 +42,7 @@ def graficos ():
     pygame.display.update()
     pygame.time.delay(10)
     windows.fill(0x3C2EE)
-    play.mostrar()
+    
 
     #Animacao asas
     asas_animacao += 1
@@ -61,6 +64,12 @@ def graficos ():
     fundo1.mostrar()
     fundo2.mostrar()
 
+    #cano
+
+    #cano.mostrar()
+    #cano.y = 0
+
+    #Chao
     if chao1.x < -width:
         chao1.x = 0
         chao2.x = width
@@ -70,12 +79,24 @@ def graficos ():
     chao1.mostrar()
     chao2.mostrar()
 
+    #player
+    play.mostrar()
+
 def controle():
-    global g_over
+    global g_over, vel_y, mover, cair
+
+    mover = not g_over
+    vel_y += mover
+    play.y += mover * vel_y
+    play.r = mover * (-vel_y)*3
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
             return False
+        if event.type == KEYDOWN and event.key == K_SPACE and g_over:
+            g_over = False
+        if event.type == pygame.MOUSEBUTTONDOWN and not cair:
+            vel_y = mover * -12
 
     return True
 
