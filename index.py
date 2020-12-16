@@ -61,6 +61,10 @@ def restaurar():
     cair = False
     pontos = 0
 
+def colisao(a, b):
+    return a.x + a.w > b.x and a.x < b.x + b.w and a.y + a.h > b.y and a.y < b.y + b.h
+
+
 def graficos ():
     global asas_animacao
 
@@ -138,6 +142,52 @@ def controle():
 
     return True
 
+def gamee():
+    global g_over, mover, asas_animacao, cair, pontos, record
+
+    for i in range(2):
+        for j in range(4):
+            if colisao(cano[i][j], play) and cano[i][j].visible:
+                cair = True
+            if not i and 200 < cano[i][j].x < 205 and cano[i][j].visible and not g_over:
+                pontos = pontos + 1
+                if play.y < cano[i][j].y:
+                    cair= True
+    if play.y > chao1.y -play.h:
+        g_over = True
+        play.r = -90
+        asas_animacao = 0
+        cair = True
+
+def textos():
+    global pontos, record
+
+    if pontos> record:
+        record = pontos
+
+    if g_over and cair:
+        font = pygame.font.SysFont("arial", 36, 1) #preciso informar uma fonte ao chamar 
+        pygame.draw.rect(windows, 0x543847, [300,100,190,200], 10)
+        pygame.draw.rect(windows, 0xDED895, [305,104,180,190])
+        txt = font.render("Recorde", 0, (255, 127, 39))
+        windows.blit(txt, (310, 110))
+        txt = font.render(str(record), 0, (255, 127, 39))
+        windows.blit(txt, (380, 146))
+        txt = font.render("Pontos", 0, (255, 127, 39))
+        windows.blit(txt, (310, 184))
+        txt = font.render(str(pontos), 0, (255, 127, 39))
+        windows.blit(txt, (380, 220))
+        txt = font.render("Pressione para jogar", 0, (255, 127, 39))
+        windows.blit(txt, (350, 530))
+    else:
+        font = pygame.font.SysFont("arial black", 35)
+        txt = font.render(str(pontos), 0, (255, 127, 39), 0x11d1E0)
+        windows.blit(txt, (380, 146))
+
+restaurar()
+
 while game:
+    gamee()
+    textos()
     graficos()
     game = controle()
