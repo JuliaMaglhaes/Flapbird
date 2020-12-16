@@ -33,8 +33,33 @@ fundo1= itens.Itens(windows, 0, 210, 0, 0, background, 0)
 fundo2 = itens.Itens(windows, width, 210, 0, 0, background, 0)
 chao1 = itens.Itens(windows, 0, 466, 0, 0, chao, 0)
 chao2 = itens.Itens(windows, width, 466, 0, 0, chao, 0)
-cano = itens.Itens(windows, 210, 400, 87, 310, tubo, 0)
 
+for i in range(2):
+    cano.append([0] * 4)
+
+for i in range(4):
+    cano[0][i] = itens.Itens(windows, i*210, -100, 87, 310, tubo, 0 )
+    cano[1][i] = itens.Itens(windows, i*210, 400, 87, 310, tubo, 0 )
+
+
+def restaurar():
+    global vel_y, acelerar, cair, pontos
+
+    for i in range(4):
+        cano[0][i].x = width + i *220
+        cano[1][i].x = width + i *220
+        visible = random.randint(0, 1)
+        cano[0][i].visible = visible
+        cano[1][i].visible = visible
+        cano_y = random.randint(0,9) * -(cano[0][0].h/10)
+        cano[0][i].y = cano_y
+        cano[1][i].y = cano_y + 470
+        cano[1][i].r = 180 #inverrter cano
+    
+    play.y = height/3
+    vel_y =0
+    cair = False
+    pontos = 0
 
 def graficos ():
     global asas_animacao
@@ -65,9 +90,21 @@ def graficos ():
     fundo2.mostrar()
 
     #cano
+    for i in range(4):
+        cano[0][i].mostrar()
+        cano[1][i].mostrar()
+        cano[0][i].x -= mover *acelerar
+        cano[1][i].x -= mover * acelerar
 
-    #cano.mostrar()
-    #cano.y = 0
+        if cano[0][i].x < -cano[0][0].w:
+            visible = random.randint(0, 1)
+            cano[0][i].visible = visible
+            cano[1][i].visible = visible
+            cano_y = random.randint (0, 9) * -(cano[0][0].h/10)
+            cano[0][i].y = cano_y
+            cano[1][i].y = cano_y + 470
+            cano[0][i].x = width
+            cano[1][i].x = width
 
     #Chao
     if chao1.x < -width:
@@ -95,6 +132,7 @@ def controle():
             return False
         if event.type == KEYDOWN and event.key == K_SPACE and g_over:
             g_over = False
+            restaurar()
         if event.type == pygame.MOUSEBUTTONDOWN and not cair:
             vel_y = mover * -12
 

@@ -15,3 +15,4 @@ class Itens:
         image = pygame.transform.rotate(self.img, self.r)
         if self.visible:
             self.windows.blit(image, (self.x, self.y))
+            #self.windows.blit(self.img,(self.x, self.y))
