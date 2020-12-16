@@ -88,7 +88,6 @@ psycopg2-binary==2.8.6
 pt-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-2.2.5/pt_core_news_sm-2.2.5.tar.gz
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-PyAudio @ file:///C:/Users/julia/pipwin/PyAudio-0.2.11-cp37-cp37m-win_amd64.whl
 pycparser==2.20
 pydot==1.4.1
 pygame==2.0.0
